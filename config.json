@@ -1,0 +1,10 @@
+{
+  "anthropicApiKey": "sk-ant-METS-TA-CLE-ICI",
+  "master": {
+    "name": "Masudi",
+    "languages": ["français", "lingala", "swahili", "anglais"],
+    "profile": "Je m'appelle Masudi. Je suis étudiant en informatique et finance à Kinshasa, DRC. Je suis sérieux mais décontracté avec mes amis. Je n'aime pas les longs discours inutiles. [COMPLETE AVEC PLUS D'INFOS SUR TOI]",
+    "style": "direct, bref, décontracté. Pas de formules trop formelles avec les amis.",
+    "phrases": ["Dkr", "Oft", "Ok frère", "Wah", "Je reviens", "On en parle plus tard"]
+  }
+}
