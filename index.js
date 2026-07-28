@@ -8,7 +8,21 @@ const { Boom } = require('@hapi/boom');
 const fs = require('fs');
 const path = require('path');
 const pino = require('pino');
+const express = require('express');
+const QRCode = require('qrcode');
+const app = express();
 
+let qrDataUrl = null;
+
+app.get('/qr', async (req, res) => {
+  if (qrDataUrl) {
+    res.send(<html><body style="display:flex;justify-content:center;align-items:center;height:100vh;"><img src="${qrDataUrl}" style="width:500px;height:500px;"/></body></html>);
+  } else {
+    res.send('QR code not ready yet. Refresh in a few seconds.');
+  }
+});
+
+app.listen(8080, () => console.log('QR available at http://localhost:8080/qr'));
 const CACHE_FILE  = path.join(__dirname, 'message_cache.json');
 const MEDIA_DIR   = path.join(__dirname, 'media_cache');
 const CONFIG_FILE = path.join(__dirname, 'config.json');
@@ -149,10 +163,13 @@ async function startBot() {
   sock.ev.on('creds.update', saveCreds);
 
   sock.ev.on('connection.update', function(update) {
-    if (update.qr) { require('qrcode-terminal').generate(update.qr, { small: true }); }
+    if (update.qr) { 
+  QRCode.toDataURL(update.qr, (err, url) => { qrDataUrl = url; });
+  require('qrcode-terminal').generate(update.qr, { small: true }); 
+}
     const connection = update.connection;
-    const lastDisconnect = update.lastDisconnect;
-    if (connection === 'close') {
+{    const lastDisconnect = update.lastDisconnect;
+}    if (connection === 'close') {
       const code = new Boom(lastDisconnect && lastDisconnect.error).output.statusCode;
       if (code !== DisconnectReason.loggedOut) startBot();
     } else if (connection === 'open') {
